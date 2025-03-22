@@ -87,8 +87,8 @@ class TypewriterText extends HTMLElement {
           border: 4px solid ${fontColor};
           border-radius: 4px;
           box-sizing: border-box;
-          margin-top: 2em; /* Added top margin */
-          margin-bottom: 2em; /* Added bottom margin */
+          margin-top: 2em;
+          margin-bottom: 2em;
         }
 
         p {
