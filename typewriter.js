@@ -7,7 +7,8 @@ class TypewriterText extends HTMLElement {
   static get observedAttributes() {
     return [
       'text', 'font-size', 'font-family', 'font-color', 
-      'background-color', 'typing-speed', 'typewriter-symbol'
+      'background-color', 'typing-speed', 'typewriter-symbol', 
+      'container-width', 'text-alignment'
     ];
   }
 
@@ -65,6 +66,8 @@ class TypewriterText extends HTMLElement {
     const fontColor = this.getAttribute('font-color') || '#00FFFF'; // Cyan
     const backgroundColor = this.getAttribute('background-color') || '#000000'; // Black
     const typewriterSymbol = this.getAttribute('typewriter-symbol') || '|';
+    const containerWidth = parseFloat(this.getAttribute('container-width')) || 70; // In vw
+    const textAlignment = this.getAttribute('text-alignment') || 'left';
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -81,8 +84,7 @@ class TypewriterText extends HTMLElement {
         }
 
         .inner {
-          width: 100%;
-          max-width: 70vw;
+          width: ${containerWidth}vw;
           padding: 2em;
           border: 4px solid ${fontColor};
           border-radius: 4px;
@@ -98,9 +100,10 @@ class TypewriterText extends HTMLElement {
           font-size: ${fontSize}vw;
           line-height: 2em;
           margin: 0;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-          white-space: normal;
+          text-align: ${textAlignment};
+          white-space: pre-wrap; /* Preserve spaces and wrap whole words */
+          overflow-wrap: normal; /* Prevent word breaking */
+          word-break: normal; /* Ensure words stay intact */
         }
 
         span {
