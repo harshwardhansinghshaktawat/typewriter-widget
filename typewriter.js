@@ -53,7 +53,7 @@ class TypewriterText extends HTMLElement {
         }, delay);
 
         if (index === $chars.length - 1) {
-          delay += typingSpeed * 4; // Extra delay between lines
+          delay += typingSpeed * 4;
         }
       });
     });
@@ -61,12 +61,12 @@ class TypewriterText extends HTMLElement {
 
   render() {
     const text = this.getAttribute('text') || '<p>Welcome aboard.</p><p>Let’s explore together.</p><p>Follow my journey.</p>';
-    const fontSize = parseFloat(this.getAttribute('font-size')) || 2; // In vw
+    const fontSize = parseFloat(this.getAttribute('font-size')) || 2;
     const fontFamily = this.getAttribute('font-family') || 'Courier New';
-    const fontColor = this.getAttribute('font-color') || '#00FFFF'; // Cyan
-    const backgroundColor = this.getAttribute('background-color') || '#000000'; // Black
+    const fontColor = this.getAttribute('font-color') || '#00FFFF';
+    const backgroundColor = this.getAttribute('background-color') || '#000000';
     const typewriterSymbol = this.getAttribute('typewriter-symbol') || '|';
-    const containerWidth = parseFloat(this.getAttribute('container-width')) || 70; // In vw
+    const containerWidth = parseFloat(this.getAttribute('container-width')) || 70;
     const textAlignment = this.getAttribute('text-alignment') || 'left';
 
     this.shadowRoot.innerHTML = `
@@ -101,9 +101,9 @@ class TypewriterText extends HTMLElement {
           line-height: 2em;
           margin: 0;
           text-align: ${textAlignment};
-          white-space: pre-wrap; /* Preserve spaces and wrap whole words */
-          overflow-wrap: normal; /* Prevent word breaking */
-          word-break: normal; /* Ensure words stay intact */
+          white-space: pre-wrap;
+          overflow-wrap: normal;
+          word-break: normal;
         }
 
         span {
