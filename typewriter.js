@@ -38,14 +38,12 @@ class TypewriterText extends HTMLElement {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !this.isAnimating) {
           this.isAnimating = true;
-          const targets = this.shadowRoot.querySelectorAll('p');
-          this.setupTyping(targets); // Prepare the spans
-          this.runTyping(targets);   // Start the animation
+          this.runTyping(this.shadowRoot.querySelectorAll('p'));
+          observer.unobserve(this); // Stop observing once animation starts
         }
       });
     }, { threshold: 0.1 }); // Trigger when 10% of element is visible
 
-    // Observe the element itself
     this.observer.observe(this);
   }
 
@@ -90,11 +88,7 @@ class TypewriterText extends HTMLElement {
     const containerWidth = parseFloat(this.getAttribute('container-width')) || 70; // In vw
     const textAlignment = this.getAttribute('text-alignment') || 'left';
 
-    // Reset animation state if content changes
-    if (this.shadowRoot.innerHTML && text !== this.getAttribute('current-text')) {
-      this.isAnimating = false;
-      this.setAttribute('current-text', text);
-    }
+    this.isAnimating = false; // Reset animation flag on re-render
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -160,7 +154,8 @@ class TypewriterText extends HTMLElement {
       </div>
     `;
 
-    // Keep the original content structure but let the IntersectionObserver handle animation
+    const targets = this.shadowRoot.querySelectorAll('p');
+    this.setupTyping(targets); // Prepare spans, but don't animate yet
   }
 }
 
