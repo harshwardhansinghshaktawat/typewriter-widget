@@ -90,9 +90,10 @@ class TypewriterText extends HTMLElement {
     const containerWidth = parseFloat(this.getAttribute('container-width')) || 70; // In vw
     const textAlignment = this.getAttribute('text-alignment') || 'left';
 
-    // Reset animation state if attributes change
-    if (this.isAnimating) {
+    // Reset animation state if content changes
+    if (this.shadowRoot.innerHTML && text !== this.getAttribute('current-text')) {
       this.isAnimating = false;
+      this.setAttribute('current-text', text);
     }
 
     this.shadowRoot.innerHTML = `
@@ -100,12 +101,8 @@ class TypewriterText extends HTMLElement {
         @import url('https://fonts.googleapis.com/css?family=Courier+New');
 
         :host {
-          display: block;
-          width: 100%;
-        }
-
-        .typewriter-container {
-          width: 100%;
+          width: 100vw;
+          height: 100vh;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -157,16 +154,13 @@ class TypewriterText extends HTMLElement {
           100% { opacity: 1; }
         }
       </style>
-      <div class="typewriter-container">
-        <div class="inner">
-          ${text}
-          <span class="cursor">${typewriterSymbol}</span>
-        </div>
+      <div class="inner">
+        ${text}
+        <span class="cursor">${typewriterSymbol}</span>
       </div>
     `;
 
-    // Do not setup typing or run animation here
-    // Let the IntersectionObserver handle it when the element becomes visible
+    // Keep the original content structure but let the IntersectionObserver handle animation
   }
 }
 
