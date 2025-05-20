@@ -39,11 +39,12 @@ class TypewriterText extends HTMLElement {
         if (entry.isIntersecting && !this.isAnimating) {
           this.isAnimating = true;
           this.runTyping(this.shadowRoot.querySelectorAll('p'));
-          observer.unobserve(this); // Stop observing once animation starts
+          observer.unobserve(entry.target); // Stop observing once animation starts
         }
       });
     }, { threshold: 0.1 }); // Trigger when 10% of element is visible
 
+    // Observe the element itself
     this.observer.observe(this);
   }
 
@@ -79,7 +80,7 @@ class TypewriterText extends HTMLElement {
   }
 
   render() {
-    const text = this.getAttribute('text') || '<p>Welcome aboard.</p><p>Let’s explore together.</p><p>Follow my journey.</p>';
+    const text = this.getAttribute('text') || '<p>Welcome aboard.</p><p>Let's explore together.</p><p>Follow my journey.</p>';
     const fontSize = parseFloat(this.getAttribute('font-size')) || 2; // In vw
     const fontFamily = this.getAttribute('font-family') || 'Courier New';
     const fontColor = this.getAttribute('font-color') || '#00FFFF'; // Cyan
@@ -155,7 +156,7 @@ class TypewriterText extends HTMLElement {
     `;
 
     const targets = this.shadowRoot.querySelectorAll('p');
-    this.setupTyping(targets); // Prepare spans, but don’t animate yet
+    this.setupTyping(targets); // Prepare spans, but don't animate yet
   }
 }
 
