@@ -79,7 +79,7 @@ class TypewriterText extends HTMLElement {
   }
 
   render() {
-    const text = this.getAttribute('text') || '<p>Welcome aboard.</p><p>Let's explore together.</p><p>Follow my journey.</p>';
+    const text = this.getAttribute('text') || '<p>Welcome aboard.</p><p>Let’s explore together.</p><p>Follow my journey.</p>';
     const fontSize = parseFloat(this.getAttribute('font-size')) || 2; // In vw
     const fontFamily = this.getAttribute('font-family') || 'Courier New';
     const fontColor = this.getAttribute('font-color') || '#00FFFF'; // Cyan
@@ -155,7 +155,7 @@ class TypewriterText extends HTMLElement {
     `;
 
     const targets = this.shadowRoot.querySelectorAll('p');
-    this.setupTyping(targets); // Prepare spans, but don't animate yet
+    this.setupTyping(targets); // Prepare spans, but don’t animate yet
   }
 }
 
