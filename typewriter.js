@@ -38,12 +38,14 @@ class TypewriterText extends HTMLElement {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !this.isAnimating) {
           this.isAnimating = true;
-          this.runTyping(this.shadowRoot.querySelectorAll('p'));
-          observer.unobserve(this); // Stop observing once animation starts
+          const targets = this.shadowRoot.querySelectorAll('p');
+          this.setupTyping(targets); // Prepare the spans
+          this.runTyping(targets);   // Start the animation
         }
       });
     }, { threshold: 0.1 }); // Trigger when 10% of element is visible
 
+    // Observe the element itself
     this.observer.observe(this);
   }
 
@@ -79,7 +81,7 @@ class TypewriterText extends HTMLElement {
   }
 
   render() {
-    const text = this.getAttribute('text') || '<p>Welcome aboard.</p><p>Let’s explore together.</p><p>Follow my journey.</p>';
+    const text = this.getAttribute('text') || '<p>Welcome aboard.</p><p>Let's explore together.</p><p>Follow my journey.</p>';
     const fontSize = parseFloat(this.getAttribute('font-size')) || 2; // In vw
     const fontFamily = this.getAttribute('font-family') || 'Courier New';
     const fontColor = this.getAttribute('font-color') || '#00FFFF'; // Cyan
@@ -88,15 +90,22 @@ class TypewriterText extends HTMLElement {
     const containerWidth = parseFloat(this.getAttribute('container-width')) || 70; // In vw
     const textAlignment = this.getAttribute('text-alignment') || 'left';
 
-    this.isAnimating = false; // Reset animation flag on re-render
+    // Reset animation state if attributes change
+    if (this.isAnimating) {
+      this.isAnimating = false;
+    }
 
     this.shadowRoot.innerHTML = `
       <style>
         @import url('https://fonts.googleapis.com/css?family=Courier+New');
 
         :host {
-          width: 100vw;
-          height: 100vh;
+          display: block;
+          width: 100%;
+        }
+
+        .typewriter-container {
+          width: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -148,14 +157,16 @@ class TypewriterText extends HTMLElement {
           100% { opacity: 1; }
         }
       </style>
-      <div class="inner">
-        ${text}
-        <span class="cursor">${typewriterSymbol}</span>
+      <div class="typewriter-container">
+        <div class="inner">
+          ${text}
+          <span class="cursor">${typewriterSymbol}</span>
+        </div>
       </div>
     `;
 
-    const targets = this.shadowRoot.querySelectorAll('p');
-    this.setupTyping(targets); // Prepare spans, but don’t animate yet
+    // Do not setup typing or run animation here
+    // Let the IntersectionObserver handle it when the element becomes visible
   }
 }
 
